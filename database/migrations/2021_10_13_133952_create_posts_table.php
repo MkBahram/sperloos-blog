@@ -14,12 +14,12 @@ class CreatePostsTable extends Migration
     public function up()
     {
         Schema::create('posts', function (Blueprint $table) {
-            $table->id();
+            $table->increments('id');
             $table->string('title');
             $table->text('content');
             $table->string('thumbnail');
             $table->unsignedInteger('user_id')->index('user_id');
-            $table->foreign('user_id')->refrences('id')->on('users')-onDelete('cascade');
+            $table->foreign('user_id')->refrences('id')->on('users')->onDelete('casacade');
             $table->timestamps();
         });
     }
@@ -31,6 +31,9 @@ class CreatePostsTable extends Migration
      */
     public function down()
     {
+        $table->dropForeign('posts_user_id_foreign');
+        $table->dropIndex('posts_user_id_index');
+        $table->dropColumn('user_id');
         Schema::dropIfExists('posts');
     }
 }
